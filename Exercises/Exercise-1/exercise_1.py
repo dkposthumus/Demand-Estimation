@@ -129,4 +129,16 @@ print(blp_result)
 
 ##########################################################################
 # impute marginal costs from pricing optimality
-
+products['firm_ids'] = products['product_ids'].str.extract(r'F(\d+)B')
+blp_problem = pyblp.Problem(pyblp.Formulation('1 + prices',
+                            absorb='C(market_ids) + C(product_ids)'),
+                            products)
+blp_result = blp_problem.solve(method='2s')
+# use .compute_costs on results from last question
+products['cost'] = blp_result.compute_costs()
+# plot scatterplot of price and marginal cost, adding y = x line 
+plt.scatter(products['prices'], products['cost'])
+plt.plot([0, 0.25], [0, 0.25], color='black', linewidth=0.5)
+plt.xlabel('Prices')
+plt.ylabel('Marginal Costs')
+plt.show()
