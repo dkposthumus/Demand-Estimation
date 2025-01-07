@@ -120,6 +120,7 @@ plt.show()
 
 ##########################################################################
 # supplemental questions -- try different standard errors 
+products['clustering_ids'] = products['market_ids']
 blp_problem = pyblp.Problem(pyblp.Formulation('1 + prices',
                             absorb='C(market_ids) + C(product_ids)'),
                             products)
@@ -127,3 +128,5 @@ blp_result = blp_problem.solve(method='2s', se_type='clustered')
 print(blp_result)
 
 ##########################################################################
+# impute marginal costs from pricing optimality
+
